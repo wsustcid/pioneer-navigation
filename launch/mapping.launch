@@ -1,0 +1,33 @@
+<launch>
+<!--
+Usage:
+- LT(6): Brake
+- RT(7): Throttle
+- left(0): steering 
+- A(0): v-1 gear (set the feasible velocity interval into [0, 0.5])
+- B(1): v-2 gear (set the feasible velocity interval into [0.3, 0.8])
+- X(2): w-1 gear (set the feasible angular velocity interval into [-0.5, 0.5])
+- Y(3): w-2 gear (set the feasible angular velocity interval into [-1, 1])
+
+- LB(4): Disable data collection
+- RB(5): Enable data collection
+ -->
+
+
+  <!-- Start robot driver (Simulator or a real robot should be start first) -->
+  <node pkg="rosaria" type="RosAria" name="RosAria" output="screen"/>
+
+  <!-- Start the joystick driver to publish the /joy topic -->
+  <node pkg="joy" type="joy_node" name="joystick" output="screen"/>
+
+  <!-- Start the telop node to control the car-->
+  <node pkg="pioneer-navigation" type="control.py" name="teleop_p3dx" output="screen">
+    <param name="gear_w1" value="0.5" />
+  </node>
+
+   <node pkg="pioneer-navigation" type="mapping.py" name="mapping" output="screen" >
+    <param name="save_map" value="True" />
+    <param name="map_name" value="../map/track_map.txt" />
+   </node>
+
+</launch>
